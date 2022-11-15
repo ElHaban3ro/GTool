@@ -17,8 +17,8 @@ def get_user_info(user):
     followers_ubi = (1010, 310)
     following_ubi = (1210, 310)
     
-    repo_uno = (1010, 535)
-    repo_dos = (1010, 585)
+    repo_uno = (970, 505)
+    repo_dos = (970, 555)
 
 
     user_data = {
@@ -45,17 +45,18 @@ def get_user_info(user):
         user_data['following'] = info[1].string
 
 
-    
-    avatar = supsup.find_all('img', class_='avatar-user')[-1]['src']
+    try:
+        avatar = supsup.find_all('img', class_='avatar-user')[-1]['src']
+
+    except:
+        return 'Error. User no found.'
+
     user_data['icon'] = avatar
     
             
     repositories = supsup.find_all('a', class_='UnderlineNav-item')[1]
-    print(repositories)
-
-    repositories = repositories.find_all('span')[0]
-    print(repositories)
-
+    repositories = repositories.find_all('span')[0].string
+    user_data['repos_count'] = repositories
 
 
 
@@ -71,13 +72,11 @@ def get_user_info(user):
             for repo in recent_repo[:2]:
                 user_data['recent'].append(repo.find_all('a')[0].string.replace('\n        ', ''))
 
+
+        else:
+            user_data['recent'].append(recent_repo[0].find_all('a')[0].string.replace('\n        ', ''))
+
     
-
-
-
-
-
-
 
     try:
         os.mkdir(f'./users/{user}')
@@ -86,62 +85,56 @@ def get_user_info(user):
     
 
 
-    # avatar_route = f'./users/{user}/avatar-{user}.png'
-    # avatar_download = requests.get(user_data['icon']).content 
-    # with open(avatar_route, 'wb+') as image_download:
-    #     image_download.write(avatar_download)
+    avatar_route = f'./users/{user}/avatar-{user}.png'
+    avatar_download = requests.get(user_data['icon']).content 
+    with open(avatar_route, 'wb+') as image_download:
+        image_download.write(avatar_download)
 
 
-    # image_base = Image.open('./src/base/target.png')
-    # lienzo = Image.new('RGBA', image_base.size, (0, 0, 0, 0))
+    image_base = Image.open('./src/base/target.png')
+    lienzo = Image.new('RGBA', image_base.size, (0, 0, 0, 0))
 
-    # image_avatar = Image.open(avatar_route)
+    image_avatar = Image.open(avatar_route)
 
 
-    # lienzo_avatar = Image.new('RGBA', image_avatar.size, 0)
-    # mask_avatar = Image.new('L', image_avatar.size, 0)
-    # draw = ImageDraw.Draw(mask_avatar)
+    lienzo_avatar = Image.new('RGBA', image_avatar.size, 0)
+    mask_avatar = Image.new('L', image_avatar.size, 0)
+    draw = ImageDraw.Draw(mask_avatar)
 
     
-    # circle = draw.ellipse((0, 0, image_avatar.size[0], image_avatar.size[1]), fill = 255) # Imagen redonda!!
-    # image_avatar = Image.composite(image_avatar, lienzo_avatar, mask_avatar).resize(avatar_size)
-    # lienzo.paste(image_avatar,  avatar_ubi)
+    circle = draw.ellipse((0, 0, image_avatar.size[0], image_avatar.size[1]), fill = 255) # Imagen redonda!!
+    image_avatar = Image.composite(image_avatar, lienzo_avatar, mask_avatar).resize(avatar_size)
+    lienzo.paste(image_avatar,  avatar_ubi)
 
-    # f_target = Image.alpha_composite(image_base, lienzo)
-
-
-
-    # # Text!
-    # text_layer = ImageDraw.Draw(f_target)
-
-    # font_username = ImageFont.truetype(font_route, 70)
-    # font_data = ImageFont.truetype(font_route, 40)
-
-    # text_layer.text(username_ubi, f'@{user}', font = font_username, align='center', fill=(35, 35, 35, 255), anchor='mm')
+    f_target = Image.alpha_composite(image_base, lienzo)
 
 
 
-    # text_layer.text(repos_ubi, f'@{user_data["repos_count"]}', font = font_data, align='center', fill=(35, 35, 35, 255), anchor='mm')
-    # text_layer.text(followers_ubi, f'@{user_data["followers"]}', font = font_data, align='center', fill=(35, 35, 35, 255), anchor='mm')
-    # text_layer.text(following_ubi, f'@{user_data["following"]}', font = font_data, align='center', fill=(35, 35, 35, 255), anchor='mm')
+    # Text!
+    text_layer = ImageDraw.Draw(f_target)
+
+    font_username = ImageFont.truetype(font_route, 70)
+    font_data = ImageFont.truetype(font_route, 40)
+
+    text_layer.text(username_ubi, f'@{user}', font = font_username, align='center', fill=(35, 35, 35, 255), anchor='mm')
+
+
+
+    text_layer.text(repos_ubi, f'{user_data["repos_count"]}', font = font_data, align='center', fill=(35, 35, 35, 255), anchor='mm')
+    text_layer.text(followers_ubi, f'{user_data["followers"]}', font = font_data, align='center', fill=(35, 35, 35, 255), anchor='mm')
+    text_layer.text(following_ubi, f'{user_data["following"]}', font = font_data, align='center', fill=(35, 35, 35, 255), anchor='mm')
 
 
 
 
-    # text_layer.text(repo_uno, f'- {user_data["recent"][0]}', font = font_data, align='left', fill=(35, 35, 35, 255), anchor='ms')
-    # text_layer.text(repo_dos, f'- {user_data["recent"][0]}', font = font_data, align='left', fill=(35, 35, 35, 255), anchor='ms')
+    text_layer.text(repo_uno, f'- {user_data["recent"][0]}', font = font_data, align='left', fill=(35, 35, 35, 255))
+    text_layer.text(repo_dos, f'- {user_data["recent"][1]}', font = font_data, align='left', fill=(35, 35, 35, 255))
 
 
 
-    # f_target.save(f'./users/{user}/target.png')
+    f_target.save(f'./users/{user}/target.png')
 
     
 
 
     return user_data
-
-
-
-
-result = get_user_info('twnlink')
-print(result)
