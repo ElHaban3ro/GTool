@@ -13,7 +13,7 @@ setup(
     long_description = long_description,
     long_description_content_type = 'text/markdown',
     packages = ['GTool'],
-    version = '1.5',
+    version = '1.6',
     license = 'MIT',
     description = 'Generate cards with useful data from different applications (for now only GitHub) and insert them in your web/app or wherever you want c: (API APP) 🎯',
     author = 'ElHaban3ro',

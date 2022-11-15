@@ -26,15 +26,3 @@ def github_generator(github_user, color): # Recibe 2 valores.
 
 
     
-
-
-
-
-
-
-
-
-
-
-
-app.run()
