@@ -5,8 +5,8 @@ from bs4 import BeautifulSoup
 
 
 
-def get_user_info(user):
-    font_route = os.path.abspath('./src/base/MP16OSF.ttf')
+def github(user):
+    font_route = os.path.abspath('./GTool/base/MP16OSF.ttf')
 
     avatar_ubi = (60, 45)
     avatar_size = (600, 600)
@@ -40,9 +40,11 @@ def get_user_info(user):
     
     for campo in social_info:
         info = campo.find_all('span', class_='text-bold')
-        
-        user_data['followers'] = info[0].string
-        user_data['following'] = info[1].string
+        try: 
+            user_data['followers'] = info[0].string
+            user_data['following'] = info[1].string
+        except:
+            return 'Error. The profile may be too new or the profile is private.'
 
 
     try:
@@ -79,7 +81,7 @@ def get_user_info(user):
     
 
     try:
-        os.mkdir(f'./users/{user}')
+        os.mkdir(os.path.abspath(f'./users/{user}'))
     except:
         pass
     
@@ -91,7 +93,7 @@ def get_user_info(user):
         image_download.write(avatar_download)
 
 
-    image_base = Image.open('./src/base/target.png')
+    image_base = Image.open(os.path.abspath('./GTool/base/target.png'))
     lienzo = Image.new('RGBA', image_base.size, (0, 0, 0, 0))
 
     image_avatar = Image.open(avatar_route)
@@ -131,10 +133,10 @@ def get_user_info(user):
     text_layer.text(repo_dos, f'- {user_data["recent"][1]}', font = font_data, align='left', fill=(35, 35, 35, 255))
 
 
-
-    f_target.save(f'./users/{user}/target.png')
+    target_route = os.path.abspath(f'./users/{user}/target.png')
+    f_target.save(target_route)
 
     
 
 
-    return user_data
+    return target_route
