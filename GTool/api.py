@@ -25,4 +25,8 @@ def github_generator(github_user, color): # Recibe 2 valores.
         return gen # Devolvemos el error.
 
 
-    
+
+
+
+if __name__ == '__main__':
+    app.run('0.0.0.0', '8000', debug=True)
