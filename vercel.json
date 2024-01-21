@@ -1,0 +1,14 @@
+{
+    "builds": [
+      {
+        "src": "GTool/api.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "GTool/api.py"
+      }
+    ]
+  }

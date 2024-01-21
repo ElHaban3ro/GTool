@@ -1,5 +1,5 @@
 requests
 Pillow
-beatifulsoup4
+beautifulsoup4
 lxml
 Flask
