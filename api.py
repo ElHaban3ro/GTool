@@ -2,14 +2,14 @@
 from flask import Flask, request, send_file
 from markupsafe import escape # para pintar en html.
 
-from generate_target import github # Nuestro módulo.
+from GTool.generate_target  import github # Nuestro módulo.
 import os
 
 
 
 # App.
 app = Flask(__name__) # Nombre de la app = nombre del archivo.
-app.config.from_pyfile('config_api.py') # Configuramos la app por medio de un archivo python.
+app.config.from_pyfile('./GTool/config_api.py') # Configuramos la app por medio de un archivo python.
 
 
 
